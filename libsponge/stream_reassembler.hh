@@ -5,11 +5,18 @@
 
 #include <cstdint>
 #include <string>
-
+#include <deque>
 //! \brief A class that assembles a series of excerpts from a byte stream (possibly out of order,
 //! possibly overlapping) into an in-order byte stream.
 class StreamReassembler {
   private:
+	
+	std::deque<char> _buf;
+	std::deque<bool> _bitmap;
+	bool _eof{false};
+	size_t _head_index = 0;
+	size_t _unassembled_bytes = 0;
+	
     // Your code here -- add private members as necessary.
 
     ByteStream _output;  //!< The reassembled in-order byte stream
@@ -20,7 +27,7 @@ class StreamReassembler {
     //! \note This capacity limits both the bytes that have been reassembled,
     //! and those that have not yet been reassembled.
     StreamReassembler(const size_t capacity);
-
+	
     //! \brief Receive a substring and write any newly contiguous bytes into the stream.
     //!
     //! The StreamReassembler will stay within the memory limits of the `capacity`.
