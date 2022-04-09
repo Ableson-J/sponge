@@ -46,11 +46,11 @@ std::string ByteStream::read(const size_t len) {
 	pop_output(len);
 	return ret;
 }
-
+//will be called by stream_reassembler
 void ByteStream::end_input() {
 	_end_input = true;
 }
-
+//will be called by receiver to determin whether fin signal is taking effect
 bool ByteStream::input_ended() const { return _end_input; }
 
 size_t ByteStream::buffer_size() const { return _buf.size(); }
