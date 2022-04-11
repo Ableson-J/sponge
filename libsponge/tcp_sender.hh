@@ -22,7 +22,8 @@ class TCPSender {
 
     //! outbound queue of segments that the TCPSender wants sent
     std::queue<TCPSegment> _segments_out{};
-
+	//缓存队列
+	std::queue<TCPSegment> _segment_sent{};
     //! retransmission timer for the connection
     unsigned int _initial_retransmission_timeout;
 
@@ -31,6 +32,26 @@ class TCPSender {
 
     //! the (absolute) sequence number for the next byte to be sent
     uint64_t _next_seqno{0};
+	//has been acked seqno
+	uint64_t _ack_seqno = 0;
+
+	bool _syn_sent = false;
+	bool _fin_sent = false;
+	
+	//超时时间
+	size_t _retran_to;
+	//重传计时器
+	size_t _retran_timeout = 0;
+	//重传次数
+	unsigned int _retran_count = 0;
+	//timer是否打开
+	bool _retran_status = false;
+	//接收窗口大小
+	uint64_t reci_window = 0;
+	//正在发送的数据
+	uint64_t _data_in_flight = 0;
+	void send_tcp(TCPSegment& seg);
+	
 
   public:
     //! Initialize a TCPSender
