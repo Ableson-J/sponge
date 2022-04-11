@@ -80,7 +80,7 @@ void TCPSender::ack_received(const WrappingInt32 ackno, const uint16_t window_si
 		//DUMMY_CODE(ackno, window_size);
 	uint64_t abs_ackno = unwrap(ackno,_isn,_next_seqno);
 	if(abs_ackno > _next_seqno) return;
-	std::cout << "abs_ackno = "<< abs_ackno << "  _nex_seqno = "<< _next_seqno << " _ack_seqno = "<<_ack_seqno << endl;
+	//std::cout << "abs_ackno = "<< abs_ackno << "  _nex_seqno = "<< _next_seqno << " _ack_seqno = "<<_ack_seqno << endl;
 
 	if(abs_ackno >= _ack_seqno){
 		_ack_seqno = abs_ackno;
@@ -89,9 +89,9 @@ void TCPSender::ack_received(const WrappingInt32 ackno, const uint16_t window_si
 	
 	bool pop = false;
 	while(!_segment_sent.empty()){
-		std::cout<<"sent_size =" <<  _segment_sent.size() << " data flight = "<<_data_in_flight <<endl; 
+		//std::cout<<"sent_size =" <<  _segment_sent.size() << " data flight = "<<_data_in_flight <<endl; 
 		TCPSegment seg = _segment_sent.front();
-		std::cout << seg.payload().copy() << endl;
+		//std::cout << seg.payload().copy() << endl;
 		uint64_t temp = unwrap(seg.header().seqno,_isn,_next_seqno);
 		if(abs_ackno < temp + seg.length_in_sequence_space())
 			return;
